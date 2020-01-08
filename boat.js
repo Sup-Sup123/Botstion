@@ -12,13 +12,8 @@ const config  = require("./configLoader")
 
 var plugins = {}
 
-const client = new Discord.Client()
-
-client.login(config.discordToken);
-
-class Plugin {
+class Plugin extends events.EventEmitter {
     constructor(args) {
-
         this.name = args.name ? args.name : "Unnamed Plugin"
         this.author = args.author ? args.author : "Anonymous"
         this.version = args.version ? args.version : "1.0.0"
@@ -31,18 +26,19 @@ class Plugin {
         this.commands.push({name,description,usage,fn})
     }
 }
-
 class Botstion {
     constructor() {}
     plugins = plugins
     client = client
     Plugin = Plugin
+    isReady = false
 
     registerPlugin(plugin) {
         console.log("Loading plugin " + plugin.name)
         var id = Math.random().toString().replace("0.","")
         plugin.onload()
         plugins[id] = plugin
+        if (this.isReady) { plugin.emit("clientReady.") }
         return id
     }
     deregisterPlugin(pluginId) {
@@ -51,5 +47,40 @@ class Botstion {
         plugins[pluginId].onunload()
         plugins[pluginId] = undefined
     }
+    emit() {
+        for (var plugin of plugins) {
+            plugin.emit(...arguments)
+        }
+    }
 }
-module.exports = new Botstion()
+
+
+const bot = new Botstion()
+
+const client = new Discord.Client()
+
+client.on("message", function(m) {
+    var split = m.content.split(" ")
+    var cmd = split.shift()
+    if (!cmd.startsWith(config.prefix)) { return }
+    cmd = cmd.replace(config.prefix,"")
+
+
+    bot.emit("cmdInvoke", c,m,cmd,split)
+    
+    console.log(`User `)
+
+    for (var plugin of plugins) {
+
+    }
+})
+
+client.on("ready", function() {
+    bot.emit("clientReady")
+    bot.isReady = true
+})
+
+
+client.login(config.discordToken);
+
+module.exports = bot
