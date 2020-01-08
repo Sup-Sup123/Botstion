@@ -2,9 +2,9 @@
   "name": "botstion",
   "version": "5.0.0",
   "description": "Botstion is a open-source Discord.js bot with the aim of opening Discord channels to as many APIs as possible.",
-  "main": "boat.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node boat.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/theLMGN/botstion#readme",
   "dependencies": {
     "@discordjs/collection": "^0.1.3",
+    "chalk": "^3.0.0",
     "discord-paginationembed": "github:gazmull/discord-paginationembed",
     "discord.js": "github:hydrabolt/discord.js",
     "express": "^4.17.1",
@@ -30,7 +31,7 @@
     "node-fetch": "^2.6.0",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.0.0",
+    "sequelize": "^5.0.0",
     "setimmediate": "^1.0.5",
     "sqlite3": "^4.1.0",
     "tedious": "^5.0.3"
